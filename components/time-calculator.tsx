@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { add, sub, differenceInSeconds, format, parse, addDays, addWeeks, addMonths, addYears } from 'date-fns'
-import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
+import { toZonedTime } from 'date-fns-tz';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -117,11 +117,11 @@ export default function TimeCalculator() {
   const calculateTime = () => {
     try {
       const now = new Date()
-      const zonedNow = utcToZonedTime(now, timezone)
+      const zonedNow = toZonedTime(now, timezone)
       const calculatedTime = operation === 'add' 
         ? add(zonedNow, timeUnits)
         : sub(zonedNow, timeUnits)
-      const formattedResult = format(calculatedTime, dateFormat, { timeZone: timezone })
+      const formattedResult = format(calculatedTime, dateFormat)
       setResult(formattedResult)
       addToHistory('time', JSON.stringify(timeUnits), formattedResult)
       setError('')
@@ -133,8 +133,8 @@ export default function TimeCalculator() {
   const calculateDifference = () => {
     if (timeDiff.start && timeDiff.end) {
       try {
-        const start = zonedTimeToUtc(parse(timeDiff.start, "yyyy-MM-dd'T'HH:mm", new Date()), timezone)
-        const end = zonedTimeToUtc(parse(timeDiff.end, "yyyy-MM-dd'T'HH:mm", new Date()), timezone)
+        const start = parse(timeDiff.start, "yyyy-MM-dd'T'HH:mm", new Date())
+        const end = parse(timeDiff.end, "yyyy-MM-dd'T'HH:mm", new Date())
         const diffInSeconds = Math.abs(differenceInSeconds(end, start))
         const days = Math.floor(diffInSeconds / (3600 * 24))
         const hours = Math.floor((diffInSeconds % (3600 * 24)) / 3600)
@@ -153,8 +153,8 @@ export default function TimeCalculator() {
   const calculateRecurringEvents = () => {
     try {
       const { startDate, frequency, count } = recurringEvent
-      const start = zonedTimeToUtc(parse(startDate, "yyyy-MM-dd'T'HH:mm", new Date()), timezone)
-      const events = [format(start, dateFormat, { timeZone: timezone })]
+      const start = parse(startDate, "yyyy-MM-dd'T'HH:mm", new Date())
+      const events = [format(start, dateFormat)]
 
       for (let i = 1; i < count; i++) {
         let nextDate
@@ -172,7 +172,7 @@ export default function TimeCalculator() {
             nextDate = addYears(start, i)
             break
         }
-        events.push(format(nextDate, dateFormat, { timeZone: timezone }))
+        events.push(format(nextDate, dateFormat))
       }
 
       const result = events.join('\n')
@@ -272,9 +272,7 @@ export default function TimeCalculator() {
               <Label htmlFor="add">Add</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Radio
-
-GroupItem value="subtract" id="subtract" />
+              <RadioGroupItem value="subtract" id="subtract" />
               <Label htmlFor="subtract">Subtract</Label>
             </div>
           </RadioGroup>
