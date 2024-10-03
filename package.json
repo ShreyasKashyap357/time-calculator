@@ -1,13 +1,14 @@
 {
-  "name": "time-calculator",
-  "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next build && next export"
   },
+  "name": "time-calculator",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
