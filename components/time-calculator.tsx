@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { add, sub, differenceInSeconds, format, parse, addDays, addWeeks, addMonths, addYears } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import { Button } from "@/components/ui/button"
@@ -111,12 +111,20 @@ export default function TimeCalculator() {
       const formattedResult = format(calculatedTime, dateFormat)
       setResult(formattedResult)
       addToHistory('time', JSON.stringify(timeUnits), formattedResult)
-    } catch (err) {
-      toast({
-        title: "Error",
-        description: "Invalid input. Please check your values and try again.",
-        variant: "destructive",
-      });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast({
+          title: "Error",
+          description: "Invalid date input. Please check your values and try again." + (err.message ? `: ${err.message}` : ""),
+          variant: "destructive",
+        })
+      } else {
+        toast({
+          title: "Error",
+          description: "Invalid date input. Please check your values and try again.",
+          variant: "destructive",
+        })
+      }
     }
   }
 
@@ -133,12 +141,20 @@ export default function TimeCalculator() {
         const result = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
         setTimeDiff(prev => ({ ...prev, result }))
         addToHistory('difference', `${timeDiff.start} to ${timeDiff.end}`, result)
-      } catch (err) {
-        toast({
-          title: "Error",
-          description: "Invalid date input. Please check your values and try again.",
-          variant: "destructive",
-        });
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast({
+            title: "Error",
+            description: "Invalid date input. Please check your values and try again." + (err.message ? `: ${err.message}` : ""),
+            variant: "destructive",
+          })
+        } else {
+          toast({
+            title: "Error",
+            description: "Invalid date input. Please check your values and try again.",
+            variant: "destructive",
+          })
+        }
       }
     }
   }
@@ -171,18 +187,26 @@ export default function TimeCalculator() {
       const result = events.join('\n')
       setResult(result)
       addToHistory('recurring', JSON.stringify(recurringEvent), result)
-    } catch (err) {
-      toast({
-        title: "Error",
-        description: "Invalid input for recurring events. Please check your values and try again.",
-        variant: "destructive",
-      });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast({
+          title: "Error",
+          description: "Invalid date input. Please check your values and try again." + (err.message ? `: ${err.message}` : ""),
+          variant: "destructive",
+        })
+      } else {
+        toast({
+          title: "Error",
+          description: "Invalid date input. Please check your values and try again.",
+          variant: "destructive",
+        })
+      }
     }
   }
 
-  const addToHistory = (type: 'time' | 'difference' | 'recurring', input: string, result: string) => {
+  const addToHistory = useCallback((type: 'time' | 'difference' | 'recurring', input: string, result: string) => {
     setHistory(prev => [{ type, input, result, timestamp: Date.now() }, ...prev.slice(0, 19)])
-  }
+  }, [])
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
