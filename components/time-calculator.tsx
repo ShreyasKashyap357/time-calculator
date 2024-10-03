@@ -116,7 +116,7 @@ export default function TimeCalculator() {
         title: "Error",
         description: "Invalid input. Please check your values and try again.",
         variant: "destructive",
-      })
+      });
     }
   }
 
@@ -138,7 +138,7 @@ export default function TimeCalculator() {
           title: "Error",
           description: "Invalid date input. Please check your values and try again.",
           variant: "destructive",
-        })
+        });
       }
     }
   }
@@ -176,7 +176,7 @@ export default function TimeCalculator() {
         title: "Error",
         description: "Invalid input for recurring events. Please check your values and try again.",
         variant: "destructive",
-      })
+      });
     }
   }
 
