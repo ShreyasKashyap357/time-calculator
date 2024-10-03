@@ -2,29 +2,29 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main]  # Trigger the deployment on push to main branch
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Checkout the repository code
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '20'  # Use Node.js version 20
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci  # Clean install of dependencies
 
       - name: Build and Export
-        run: npm run export
+        run: npm run export  # Build the Next.js app and export as static files
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Token for authentication
+          publish_dir: ./out  # Output directory for the static files
