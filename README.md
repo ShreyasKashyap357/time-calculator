@@ -263,7 +263,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-For inquiries, please reach out to me at [your-email@example.com].
+For inquiries, please reach out to me at [shreyas.venur@gmail.com].
 
 
 ## Support
@@ -273,4 +273,4 @@ If you find this project helpful, please consider giving it a star on GitHub. Yo
 
 ## Security
 
-If you discover any security vulnerabilities within this project, please send an email to [your-email@example.com]. All security vulnerabilities will be promptly addressed.
+If you discover any security vulnerabilities within this project, please send an email to [shreyas.venur@gmail.com]. All security vulnerabilities will be promptly addressed.
