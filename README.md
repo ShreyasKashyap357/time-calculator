@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Time Calculator
 
 
@@ -275,5 +274,3 @@ If you find this project helpful, please consider giving it a star on GitHub. Yo
 ## Security
 
 If you discover any security vulnerabilities within this project, please send an email to [your-email@example.com]. All security vulnerabilities will be promptly addressed.
-=======
->>>>>>> 4a3a13ecc7b466388c1d832e9fdfcf0e4f8989af
