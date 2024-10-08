@@ -67,3 +67,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer base {
+  html, body {
+    @apply p-0 m-0 bg-black text-white;
+  }
+}
