@@ -1,0 +1,17 @@
+How to Use GNU Licenses for Your Own Software
+This is a brief explanation of how to place a program under the GNU General Public License, GNU Lesser General Public License, or GNU Affero General Public License. For the GNU Free Documentation License, we have a separate page.
+
+For further information, see our list of frequently asked questions about our licenses.
+
+If you are considering using the GNU Lesser General Public License, please read the article “Why you shouldn't use the LGPL for your next library” first. The article explains why it may be better to use the ordinary GPL instead, and how we would make the decision.
+
+Here's a brief summary of what you need to do to release a program under one of our licenses:
+
+Get a copyright disclaimer from your employer or school.
+Give each file the proper copyright notices. Make sure to clearly identify which versions of the license users can use.
+Add a COPYING file with a copy of the GNU GPL or GNU AGPL.
+Also add a COPYING.LESSER file with a copy of the GNU LGPL, if you use that.
+Put a license notice in each file.
+(Optionally) make the program display a startup notice.
+(If using the AGPL) make the program offer copies of its source code.
+This involves adding two elements to each source file of your program: a copyright notice (such as “Copyright 1999 Terry Jones”), and a statement of copying permission, saying that the program is distributed under the terms of the GNU General Public License (or the Lesser GPL, or the Affero GPL).
