@@ -9,6 +9,10 @@ const __dirname = path.dirname(__filename);
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
+  basePath: '/time-calculator', // Replace with your repository name if different
+  images: {
+    unoptimized: true,
+  },
   webpack: (config, { isServer, dev }) => {
     if (!isServer && !dev) {
       config.plugins.push({
