@@ -21,7 +21,8 @@ jobs:
         run: npm ci  # Clean install of dependencies
 
       - name: Build and Export
-        run: npm run export  # Build the Next.js app and export as static files
+        run: |
+          npm run build  # Build the Next.js app and Export as static files (combined command)
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

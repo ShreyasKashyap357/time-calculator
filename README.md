@@ -93,6 +93,8 @@ Check out the live demo [here](https://your-live-demo-link.com).
 
 4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
+5. Download the latest release of the app [here](https://github.com/time-calculator)
+
 
 ## Usage
 

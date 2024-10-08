@@ -55,53 +55,11 @@ export default function TimeCalculator() {
   })
   const { toast } = useToast()
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedTimezone = localStorage.getItem('timezone') || 'UTC'
-      const savedDateFormat = localStorage.getItem('dateFormat') || DATE_FORMATS[0]
-      const savedHistory = JSON.parse(localStorage.getItem('history') || '[]')
-      
-      setTimezone(savedTimezone)
-      setDateFormat(savedDateFormat)
-      setHistory(savedHistory)
-    }
+  const addToHistory = useCallback((type: 'time' | 'difference' | 'recurring', input: string, result: string) => {
+    setHistory(prev => [{ type, input, result, timestamp: Date.now() }, ...prev.slice(0, 19)])
   }, [])
 
-  useEffect(() => {
-    localStorage.setItem('timezone', timezone)
-  }, [timezone])
-
-  useEffect(() => {
-    localStorage.setItem('dateFormat', dateFormat)
-  }, [dateFormat])
-
-  useEffect(() => {
-    localStorage.setItem('history', JSON.stringify(history))
-  }, [history])
-
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === 'Enter') {
-        calculateTime()
-      } else if (e.ctrlKey && e.key === 'd') {
-        calculateDifference()
-      } else if (e.ctrlKey && e.key === 'r') {
-        calculateRecurringEvents()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyPress)
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress)
-    }
-  }, [timeUnits, operation, timeDiff, recurringEvent])
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setTimeUnits(prev => ({ ...prev, [name]: parseInt(value) || 0 }))
-  }
-
-  const calculateTime = () => {
+  const calculateTime = useCallback(() => {
     try {
       const now = new Date()
       const zonedNow = toZonedTime(now, timezone)
@@ -126,9 +84,9 @@ export default function TimeCalculator() {
         })
       }
     }
-  }
+  }, [timeUnits, operation, timezone, dateFormat, toast, addToHistory])
 
-  const calculateDifference = () => {
+  const calculateDifference = useCallback(() => {
     if (timeDiff.start && timeDiff.end) {
       try {
         const start = parse(timeDiff.start, "yyyy-MM-dd'T'HH:mm", new Date())
@@ -157,9 +115,9 @@ export default function TimeCalculator() {
         }
       }
     }
-  }
+  }, [timeDiff, toast, addToHistory])
 
-  const calculateRecurringEvents = () => {
+  const calculateRecurringEvents = useCallback(() => {
     try {
       const { startDate, frequency, count } = recurringEvent
       const start = parse(startDate, "yyyy-MM-dd'T'HH:mm", new Date())
@@ -202,11 +160,53 @@ export default function TimeCalculator() {
         })
       }
     }
-  }
+  }, [recurringEvent, dateFormat, toast, addToHistory])
 
-  const addToHistory = useCallback((type: 'time' | 'difference' | 'recurring', input: string, result: string) => {
-    setHistory(prev => [{ type, input, result, timestamp: Date.now() }, ...prev.slice(0, 19)])
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTimezone = localStorage.getItem('timezone') || 'UTC'
+      const savedDateFormat = localStorage.getItem('dateFormat') || DATE_FORMATS[0]
+      const savedHistory = JSON.parse(localStorage.getItem('history') || '[]')
+      
+      setTimezone(savedTimezone)
+      setDateFormat(savedDateFormat)
+      setHistory(savedHistory)
+    }
   }, [])
+
+  useEffect(() => {
+    localStorage.setItem('timezone', timezone)
+  }, [timezone])
+
+  useEffect(() => {
+    localStorage.setItem('dateFormat', dateFormat)
+  }, [dateFormat])
+
+  useEffect(() => {
+    localStorage.setItem('history', JSON.stringify(history))
+  }, [history])
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        calculateTime()
+      } else if (e.ctrlKey && e.key === 'd') {
+        calculateDifference()
+      } else if (e.ctrlKey && e.key === 'r') {
+        calculateRecurringEvents()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress)
+    }
+  }, [calculateTime, calculateDifference, calculateRecurringEvents])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setTimeUnits(prev => ({ ...prev, [name]: parseInt(value) || 0 }))
+  }
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
